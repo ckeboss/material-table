@@ -9,6 +9,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
+
 var _objectSpread2 = _interopRequireDefault(require("@babel/runtime/helpers/objectSpread"));
 
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
@@ -50,7 +52,6 @@ function (_React$Component) {
       var _this = this;
 
       var action = this.props.action;
-      var disabled = action.disabled || this.props.disabled;
 
       if (typeof action === 'function') {
         action = action(this.props.data);
@@ -68,6 +69,8 @@ function (_React$Component) {
         }
       }
 
+      var disabled = action.disabled || this.props.disabled;
+
       if (action.hidden) {
         return null;
       }
@@ -82,14 +85,15 @@ function (_React$Component) {
       var icon = typeof action.icon === "string" ? React.createElement(_Icon["default"], action.iconProps, action.icon) : typeof action.icon === "function" ? action.icon((0, _objectSpread2["default"])({}, action.iconProps, {
         disabled: disabled
       })) : React.createElement(action.icon, null);
-      var button = React.createElement(_IconButton["default"], {
+      var button = React.createElement(_IconButton["default"], (0, _extends2["default"])({
         size: this.props.size,
         color: "inherit",
         disabled: disabled,
         onClick: function onClick(event) {
           return handleOnClick(event);
-        }
-      }, icon);
+        },
+        style: action.iconButtonStyle
+      }, action.iconButtonProps), icon);
 
       if (action.tooltip) {
         // fix for issue #1049
