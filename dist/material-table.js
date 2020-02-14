@@ -759,6 +759,7 @@ function (_React$Component) {
           onEditingApproved: _this4.onEditingApproved,
           localization: (0, _objectSpread2["default"])({}, MaterialTable.defaultProps.localization.body, _this4.props.localization.body),
           onRowClick: _this4.props.onRowClick,
+          selectOnClick: _this4.props.selectOnClick,
           showAddRow: _this4.state.showAddRow,
           hasAnyEditingRow: !!(_this4.state.lastEditingRow || _this4.state.showAddRow),
           hasDetailPanel: !!props.detailPanel,

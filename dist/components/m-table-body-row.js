@@ -380,11 +380,16 @@ function (_React$Component) {
           treeDataMaxLevel = _this$props.treeDataMaxLevel,
           localization = _this$props.localization,
           actions = _this$props.actions,
-          rowProps = (0, _objectWithoutProperties2["default"])(_this$props, ["icons", "data", "columns", "components", "detailPanel", "getFieldValue", "isTreeData", "onRowClick", "onRowSelected", "onTreeExpandChanged", "onToggleDetailPanel", "onEditingCanceled", "onEditingApproved", "options", "hasAnyEditingRow", "treeDataMaxLevel", "localization", "actions"]);
+          selectOnClick = _this$props.selectOnClick,
+          selectedRowId = _this$props.selectedRowId,
+          setSelectedRowId = _this$props.setSelectedRowId,
+          rowProps = (0, _objectWithoutProperties2["default"])(_this$props, ["icons", "data", "columns", "components", "detailPanel", "getFieldValue", "isTreeData", "onRowClick", "onRowSelected", "onTreeExpandChanged", "onToggleDetailPanel", "onEditingCanceled", "onEditingApproved", "options", "hasAnyEditingRow", "treeDataMaxLevel", "localization", "actions", "selectOnClick", "selectedRowId", "setSelectedRowId"]);
       return React.createElement(React.Fragment, null, React.createElement(_TableRow["default"], (0, _extends2["default"])({}, rowProps, {
         hover: onRowClick ? true : false,
+        selected: selectOnClick ? selectedRowId === this.props.data.tableData.id : false,
         style: this.getStyle(this.props.index, this.props.level),
         onClick: function onClick(event) {
+          setSelectedRowId(_this5.props.data.tableData.id);
           onRowClick && onRowClick(event, _this5.props.data, function (panelIndex) {
             var panel = detailPanel;
 

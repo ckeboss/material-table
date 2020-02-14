@@ -11,6 +11,7 @@ import * as React from 'react';
 
 
 export default class MTableBodyRow extends React.Component {
+
   renderColumns() {
     const size = this.getElementSize();
     const mapArr = this.props.columns.filter(columnDef => !columnDef.hidden && !(columnDef.tableData.groupOrder > -1))
@@ -264,15 +265,19 @@ export default class MTableBodyRow extends React.Component {
       treeDataMaxLevel,
       localization,
       actions,
+      selectOnClick,
+      selectedRowId,
+      setSelectedRowId,
       ...rowProps } = this.props;
-
     return (
       <>
         <TableRow
           {...rowProps}
           hover={onRowClick ? true : false}
+          selected={selectOnClick ? selectedRowId === this.props.data.tableData.id : false }
           style={this.getStyle(this.props.index, this.props.level)}
           onClick={(event) => {
+            setSelectedRowId(this.props.data.tableData.id);
             onRowClick && onRowClick(event, this.props.data,
               (panelIndex) => {
                 let panel = detailPanel;

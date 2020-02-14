@@ -41,9 +41,15 @@ var MTableBody =
 function (_React$Component) {
   (0, _inherits2["default"])(MTableBody, _React$Component);
 
-  function MTableBody() {
+  function MTableBody(props) {
+    var _this;
+
     (0, _classCallCheck2["default"])(this, MTableBody);
-    return (0, _possibleConstructorReturn2["default"])(this, (0, _getPrototypeOf2["default"])(MTableBody).apply(this, arguments));
+    _this = (0, _possibleConstructorReturn2["default"])(this, (0, _getPrototypeOf2["default"])(MTableBody).call(this, props));
+    _this.state = {
+      selectedRowId: ''
+    };
+    return _this;
   }
 
   (0, _createClass2["default"])(MTableBody, [{
@@ -106,53 +112,60 @@ function (_React$Component) {
   }, {
     key: "renderUngroupedRows",
     value: function renderUngroupedRows(renderData) {
-      var _this = this;
+      var _this2 = this;
 
       return renderData.map(function (data, index) {
         if (data.tableData.editing) {
-          return React.createElement(_this.props.components.EditRow, {
-            columns: _this.props.columns.filter(function (columnDef) {
+          return React.createElement(_this2.props.components.EditRow, {
+            columns: _this2.props.columns.filter(function (columnDef) {
               return !columnDef.hidden;
             }),
-            components: _this.props.components,
+            components: _this2.props.components,
             data: data,
-            icons: _this.props.icons,
-            localization: (0, _objectSpread2["default"])({}, MTableBody.defaultProps.localization.editRow, _this.props.localization.editRow, {
-              dateTimePickerLocalization: _this.props.localization.dateTimePickerLocalization
+            icons: _this2.props.icons,
+            localization: (0, _objectSpread2["default"])({}, MTableBody.defaultProps.localization.editRow, _this2.props.localization.editRow, {
+              dateTimePickerLocalization: _this2.props.localization.dateTimePickerLocalization
             }),
             key: index,
             mode: data.tableData.editing,
-            options: _this.props.options,
-            isTreeData: _this.props.isTreeData,
-            detailPanel: _this.props.detailPanel,
-            onEditingCanceled: _this.props.onEditingCanceled,
-            onEditingApproved: _this.props.onEditingApproved,
-            getFieldValue: _this.props.getFieldValue
+            options: _this2.props.options,
+            isTreeData: _this2.props.isTreeData,
+            detailPanel: _this2.props.detailPanel,
+            onEditingCanceled: _this2.props.onEditingCanceled,
+            onEditingApproved: _this2.props.onEditingApproved,
+            getFieldValue: _this2.props.getFieldValue
           });
         } else {
-          return React.createElement(_this.props.components.Row, {
-            components: _this.props.components,
-            icons: _this.props.icons,
+          return React.createElement(_this2.props.components.Row, {
+            components: _this2.props.components,
+            icons: _this2.props.icons,
             data: data,
             index: index,
             key: "row-" + data.tableData.id,
             level: 0,
-            options: _this.props.options,
-            localization: (0, _objectSpread2["default"])({}, MTableBody.defaultProps.localization.editRow, _this.props.localization.editRow),
-            onRowSelected: _this.props.onRowSelected,
-            actions: _this.props.actions,
-            columns: _this.props.columns,
-            getFieldValue: _this.props.getFieldValue,
-            detailPanel: _this.props.detailPanel,
-            path: [index + _this.props.pageSize * _this.props.currentPage],
-            onToggleDetailPanel: _this.props.onToggleDetailPanel,
-            onRowClick: _this.props.onRowClick,
-            isTreeData: _this.props.isTreeData,
-            onTreeExpandChanged: _this.props.onTreeExpandChanged,
-            onEditingCanceled: _this.props.onEditingCanceled,
-            onEditingApproved: _this.props.onEditingApproved,
-            hasAnyEditingRow: _this.props.hasAnyEditingRow,
-            treeDataMaxLevel: _this.props.treeDataMaxLevel
+            options: _this2.props.options,
+            localization: (0, _objectSpread2["default"])({}, MTableBody.defaultProps.localization.editRow, _this2.props.localization.editRow),
+            onRowSelected: _this2.props.onRowSelected,
+            actions: _this2.props.actions,
+            columns: _this2.props.columns,
+            getFieldValue: _this2.props.getFieldValue,
+            detailPanel: _this2.props.detailPanel,
+            path: [index + _this2.props.pageSize * _this2.props.currentPage],
+            onToggleDetailPanel: _this2.props.onToggleDetailPanel,
+            onRowClick: _this2.props.onRowClick,
+            selectOnClick: _this2.props.selectOnClick,
+            selectedRowId: _this2.props.selectOnClick ? _this2.state.selectedRowId : undefined,
+            setSelectedRowId: function setSelectedRowId(selectedRowId) {
+              return _this2.props.selectOnClick ? _this2.setState({
+                selectedRowId: selectedRowId
+              }) : undefined;
+            },
+            isTreeData: _this2.props.isTreeData,
+            onTreeExpandChanged: _this2.props.onTreeExpandChanged,
+            onEditingCanceled: _this2.props.onEditingCanceled,
+            onEditingApproved: _this2.props.onEditingApproved,
+            hasAnyEditingRow: _this2.props.hasAnyEditingRow,
+            treeDataMaxLevel: _this2.props.treeDataMaxLevel
           });
         }
       });
@@ -160,32 +173,32 @@ function (_React$Component) {
   }, {
     key: "renderGroupedRows",
     value: function renderGroupedRows(groups, renderData) {
-      var _this2 = this;
+      var _this3 = this;
 
       return renderData.map(function (groupData, index) {
-        return React.createElement(_this2.props.components.GroupRow, {
-          actions: _this2.props.actions,
+        return React.createElement(_this3.props.components.GroupRow, {
+          actions: _this3.props.actions,
           key: groupData.value == null ? '' + index : groupData.value,
-          columns: _this2.props.columns,
-          components: _this2.props.components,
-          detailPanel: _this2.props.detailPanel,
-          getFieldValue: _this2.props.getFieldValue,
+          columns: _this3.props.columns,
+          components: _this3.props.components,
+          detailPanel: _this3.props.detailPanel,
+          getFieldValue: _this3.props.getFieldValue,
           groupData: groupData,
           groups: groups,
-          icons: _this2.props.icons,
+          icons: _this3.props.icons,
           level: 0,
-          path: [index + _this2.props.pageSize * _this2.props.currentPage],
-          onGroupExpandChanged: _this2.props.onGroupExpandChanged,
-          onRowSelected: _this2.props.onRowSelected,
-          onRowClick: _this2.props.onRowClick,
-          onEditingCanceled: _this2.props.onEditingCanceled,
-          onEditingApproved: _this2.props.onEditingApproved,
-          onToggleDetailPanel: _this2.props.onToggleDetailPanel,
-          onTreeExpandChanged: _this2.props.onTreeExpandChanged,
-          options: _this2.props.options,
-          isTreeData: _this2.props.isTreeData,
-          hasAnyEditingRow: _this2.props.hasAnyEditingRow,
-          localization: (0, _objectSpread2["default"])({}, MTableBody.defaultProps.localization.editRow, _this2.props.localization.editRow)
+          path: [index + _this3.props.pageSize * _this3.props.currentPage],
+          onGroupExpandChanged: _this3.props.onGroupExpandChanged,
+          onRowSelected: _this3.props.onRowSelected,
+          onRowClick: _this3.props.onRowClick,
+          onEditingCanceled: _this3.props.onEditingCanceled,
+          onEditingApproved: _this3.props.onEditingApproved,
+          onToggleDetailPanel: _this3.props.onToggleDetailPanel,
+          onTreeExpandChanged: _this3.props.onTreeExpandChanged,
+          options: _this3.props.options,
+          isTreeData: _this3.props.isTreeData,
+          hasAnyEditingRow: _this3.props.hasAnyEditingRow,
+          localization: (0, _objectSpread2["default"])({}, MTableBody.defaultProps.localization.editRow, _this3.props.localization.editRow)
         });
       });
     }
@@ -297,6 +310,7 @@ MTableBody.propTypes = {
   onToggleDetailPanel: _propTypes["default"].func.isRequired,
   onTreeExpandChanged: _propTypes["default"].func.isRequired,
   onRowClick: _propTypes["default"].func,
+  selectOnClick: _propTypes["default"].bool,
   onEditingCanceled: _propTypes["default"].func,
   onEditingApproved: _propTypes["default"].func
 };

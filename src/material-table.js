@@ -636,6 +636,7 @@ export default class MaterialTable extends React.Component {
                         onEditingApproved={this.onEditingApproved}
                         localization={{ ...MaterialTable.defaultProps.localization.body, ...this.props.localization.body }}
                         onRowClick={this.props.onRowClick}
+                        selectOnClick={this.props.selectOnClick}
                         showAddRow={this.state.showAddRow}
                         hasAnyEditingRow={!!(this.state.lastEditingRow || this.state.showAddRow)}
                         hasDetailPanel={!!props.detailPanel}

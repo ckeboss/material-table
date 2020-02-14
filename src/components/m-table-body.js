@@ -7,6 +7,14 @@ import * as React from 'react';
 /* eslint-enable no-unused-vars */
 
 class MTableBody extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedRowId: ''
+    };
+  }
+
   renderEmpty(emptyRowCount, renderData) {
     const rowHeight = this.props.options.padding === 'default' ? 49 : 36;
     const localization = { ...MTableBody.defaultProps.localization, ...this.props.localization };
@@ -81,6 +89,9 @@ class MTableBody extends React.Component {
             path={[index + this.props.pageSize * this.props.currentPage]}
             onToggleDetailPanel={this.props.onToggleDetailPanel}
             onRowClick={this.props.onRowClick}
+            selectOnClick={this.props.selectOnClick}
+            selectedRowId={this.props.selectOnClick ? this.state.selectedRowId : undefined}
+            setSelectedRowId={(selectedRowId) => this.props.selectOnClick ? this.setState({ selectedRowId }) : undefined }
             isTreeData={this.props.isTreeData}
             onTreeExpandChanged={this.props.onTreeExpandChanged}
             onEditingCanceled={this.props.onEditingCanceled}
@@ -235,6 +246,7 @@ MTableBody.propTypes = {
   onToggleDetailPanel: PropTypes.func.isRequired,
   onTreeExpandChanged: PropTypes.func.isRequired,
   onRowClick: PropTypes.func,
+  selectOnClick: PropTypes.bool,
   onEditingCanceled: PropTypes.func,
   onEditingApproved: PropTypes.func,
 };
