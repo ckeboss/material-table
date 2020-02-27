@@ -165,7 +165,7 @@ class MTableBody extends React.Component {
         {this.props.showAddRow && this.props.options.addRowPosition === "first" &&
           <this.props.components.EditRow
             columns={this.props.columns.filter(columnDef => { return !columnDef.hidden })}
-            data={this.props.initialFormData}
+            data={renderData.find(rowData => rowData.tableData.copying) || this.props.initialFormData}
             components={this.props.components}
             icons={this.props.icons}
             key="key-add-row"

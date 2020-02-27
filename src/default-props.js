@@ -47,6 +47,7 @@ export const defaultProps = {
     Add: React.forwardRef((props, ref) => <Icon {...props} ref={ref}>add_box</Icon>),
     Check: React.forwardRef((props, ref) => <Icon {...props} ref={ref}>check</Icon>),
     Clear: React.forwardRef((props, ref) => <Icon {...props} ref={ref}>clear</Icon>),
+    Copy: React.forwardRef((props, ref) => <Icon {...props} ref={ref}>file_copy</Icon>),
     Delete: React.forwardRef((props, ref) => <Icon {...props} ref={ref}>delete_outline</Icon>),
     DetailPanel: React.forwardRef((props, ref) => <Icon {...props} ref={ref}>chevron_right</Icon>),
     Edit: React.forwardRef((props, ref) => <Icon {...props} ref={ref}>edit</Icon>),
@@ -124,6 +125,7 @@ export const defaultProps = {
         deleteText: 'Are you sure you want to delete this row?',
       },
       addTooltip: 'Add',
+      copyTooltip: 'Copy',
       deleteTooltip: 'Delete',
       editTooltip: 'Edit'
     }

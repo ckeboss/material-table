@@ -198,6 +198,8 @@ function (_React$Component) {
           isLoading: true
         }, function () {
           _this.props.editable.onRowAdd(newData).then(function (result) {
+            _this.dataManager.changeRowCopying();
+
             _this.setState({
               isLoading: false,
               showAddRow: false
@@ -259,6 +261,8 @@ function (_React$Component) {
         _this.setState({
           showAddRow: false
         });
+
+        _this.dataManager.changeRowCopying();
       } else if (mode === "update" || mode === "delete") {
         _this.dataManager.changeRowEditing(rowData);
 
@@ -541,6 +545,8 @@ function (_React$Component) {
             onClick: function onClick() {
               _this3.dataManager.changeRowEditing();
 
+              _this3.dataManager.changeRowCopying();
+
               _this3.setState((0, _objectSpread2["default"])({}, _this3.dataManager.getRenderState(), {
                 showAddRow: !_this3.state.showAddRow
               }));
@@ -559,6 +565,23 @@ function (_React$Component) {
 
                 _this3.setState((0, _objectSpread2["default"])({}, _this3.dataManager.getRenderState(), {
                   showAddRow: false
+                }));
+              }
+            };
+          });
+        }
+
+        if (calculatedProps.editable.onRowCopy) {
+          calculatedProps.actions.push(function (rowData) {
+            return {
+              icon: calculatedProps.icons.Copy,
+              tooltip: localization.copyTooltip,
+              disabled: calculatedProps.editable.isEditable && !calculatedProps.editable.isEditable(rowData),
+              onClick: function onClick(e, rowData) {
+                _this3.dataManager.changeRowCopying(rowData);
+
+                _this3.setState((0, _objectSpread2["default"])({}, _this3.dataManager.getRenderState(), {
+                  showAddRow: true
                 }));
               }
             };

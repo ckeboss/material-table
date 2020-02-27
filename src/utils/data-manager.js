@@ -6,6 +6,7 @@ export default class DataManager {
   applySearch = false;
   currentPage = 0;
   detailPanelType = 'multiple'
+  lastCopyingRow = undefined;
   lastDetailPanelRow = undefined;
   lastEditingRow = undefined;
   orderBy = -1;
@@ -19,7 +20,7 @@ export default class DataManager {
   treeDataMaxLevel = 0;
   groupedDataLength = 0;
   defaultExpanded = false;
-  
+
   data = [];
   columns = [];
 
@@ -177,6 +178,17 @@ export default class DataManager {
     else if (this.lastEditingRow) {
       this.lastEditingRow.tableData.editing = undefined;
       this.lastEditingRow = undefined;
+    }
+  }
+
+  changeRowCopying(rowData) {
+    if (rowData) {
+      rowData.tableData.copying = true;
+      this.lastCopyingRow = rowData;
+    }
+    else if (this.lastCopyingRow) {
+      this.lastCopyingRow.tableData.copying = undefined;
+      this.lastCopyingRow = undefined;
     }
   }
 
@@ -486,6 +498,7 @@ export default class DataManager {
       columns: this.columns,
       currentPage: this.currentPage,
       data: this.sortedData,
+      lastCopyingRow: this.lastCopyingRow,
       lastEditingRow: this.lastEditingRow,
       orderBy: this.orderBy,
       orderDirection: this.orderDirection,

@@ -111,8 +111,8 @@ export default class MaterialTable extends React.Component {
     calculatedProps.components = { ...MaterialTable.defaultProps.components, ...calculatedProps.components };
     calculatedProps.icons = { ...MaterialTable.defaultProps.icons, ...calculatedProps.icons };
     calculatedProps.options = { ...MaterialTable.defaultProps.options, ...calculatedProps.options };
-		
-    const localization =  { ...MaterialTable.defaultProps.localization.body, ...calculatedProps.localization.body };
+
+    const localization = { ...MaterialTable.defaultProps.localization.body, ...calculatedProps.localization.body };
 
     calculatedProps.actions = [...(calculatedProps.actions || [])];
 
@@ -144,7 +144,7 @@ export default class MaterialTable extends React.Component {
           else return { ...action, position: "toolbar" };
         else return action;
       });
-    
+
     if (calculatedProps.editable) {
       if (calculatedProps.editable.onRowAdd) {
         calculatedProps.actions.push({
@@ -153,6 +153,7 @@ export default class MaterialTable extends React.Component {
           position: "toolbar",
           onClick: () => {
             this.dataManager.changeRowEditing();
+            this.dataManager.changeRowCopying();
             this.setState({
               ...this.dataManager.getRenderState(),
               showAddRow: !this.state.showAddRow
@@ -170,6 +171,20 @@ export default class MaterialTable extends React.Component {
             this.setState({
               ...this.dataManager.getRenderState(),
               showAddRow: false
+            });
+          }
+        }));
+      }
+      if (calculatedProps.editable.onRowCopy) {
+        calculatedProps.actions.push(rowData => ({
+          icon: calculatedProps.icons.Copy,
+          tooltip: localization.copyTooltip,
+          disabled: calculatedProps.editable.isEditable && !calculatedProps.editable.isEditable(rowData),
+          onClick: (e, rowData) => {
+            this.dataManager.changeRowCopying(rowData);
+            this.setState({
+              ...this.dataManager.getRenderState(),
+              showAddRow: true
             });
           }
         }));
@@ -309,6 +324,7 @@ export default class MaterialTable extends React.Component {
       this.setState({ isLoading: true }, () => {
         this.props.editable.onRowAdd(newData)
           .then(result => {
+            this.dataManager.changeRowCopying();
             this.setState({ isLoading: false, showAddRow: false }, () => {
               if (this.isRemoteData()) {
                 this.onQueryChange(this.state.query);
@@ -364,6 +380,7 @@ export default class MaterialTable extends React.Component {
   onEditingCanceled = (mode, rowData) => {
     if (mode === "add") {
       this.setState({ showAddRow: false });
+      this.dataManager.changeRowCopying();
     }
     else if (mode === "update" || mode === "delete") {
       this.dataManager.changeRowEditing(rowData);
@@ -453,18 +470,18 @@ export default class MaterialTable extends React.Component {
 
       this.onQueryChange(query);
     }
-    else {		
+    else {
       this.setState(this.dataManager.getRenderState(), () => {
-        if(this.props.onFilterChange) { 
-		const appliedFilters = this.state.columns
-			.filter(a => a.tableData.filterValue)
-			.map(a => ({
-				column: a,
-				operator: "=",
-				value: a.tableData.filterValue
-			}));
-		this.props.onFilterChange(appliedFilters);
-	}
+        if (this.props.onFilterChange) {
+          const appliedFilters = this.state.columns
+            .filter(a => a.tableData.filterValue)
+            .map(a => ({
+              column: a,
+              operator: "=",
+              value: a.tableData.filterValue
+            }));
+          this.props.onFilterChange(appliedFilters);
+        }
       });
     }
   }, this.props.options.debounceInterval)

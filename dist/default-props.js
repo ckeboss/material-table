@@ -95,6 +95,11 @@ var defaultProps = {
         ref: ref
       }), "clear");
     }),
+    Copy: _react["default"].forwardRef(function (props, ref) {
+      return _react["default"].createElement(_Icon["default"], (0, _extends2["default"])({}, props, {
+        ref: ref
+      }), "file_copy");
+    }),
     Delete: _react["default"].forwardRef(function (props, ref) {
       return _react["default"].createElement(_Icon["default"], (0, _extends2["default"])({}, props, {
         ref: ref
@@ -229,6 +234,7 @@ var defaultProps = {
         deleteText: 'Are you sure you want to delete this row?'
       },
       addTooltip: 'Add',
+      copyTooltip: 'Copy',
       deleteTooltip: 'Delete',
       editTooltip: 'Edit'
     }

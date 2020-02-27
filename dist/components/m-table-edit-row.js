@@ -53,6 +53,11 @@ function (_React$Component) {
     _this.state = {
       data: props.data ? JSON.parse(JSON.stringify(props.data)) : _this.createRowData()
     };
+
+    if (_this.state.data.tableData && _this.state.data.tableData.copying) {
+      delete _this.state.data.id;
+    }
+
     return _this;
   }
 

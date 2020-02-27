@@ -32,6 +32,7 @@ function () {
     (0, _defineProperty2["default"])(this, "applySearch", false);
     (0, _defineProperty2["default"])(this, "currentPage", 0);
     (0, _defineProperty2["default"])(this, "detailPanelType", 'multiple');
+    (0, _defineProperty2["default"])(this, "lastCopyingRow", undefined);
     (0, _defineProperty2["default"])(this, "lastDetailPanelRow", undefined);
     (0, _defineProperty2["default"])(this, "lastEditingRow", undefined);
     (0, _defineProperty2["default"])(this, "orderBy", -1);
@@ -143,6 +144,7 @@ function () {
         columns: _this.columns,
         currentPage: _this.currentPage,
         data: _this.sortedData,
+        lastCopyingRow: _this.lastCopyingRow,
         lastEditingRow: _this.lastEditingRow,
         orderBy: _this.orderBy,
         orderDirection: _this.orderDirection,
@@ -421,6 +423,17 @@ function () {
       } else if (this.lastEditingRow) {
         this.lastEditingRow.tableData.editing = undefined;
         this.lastEditingRow = undefined;
+      }
+    }
+  }, {
+    key: "changeRowCopying",
+    value: function changeRowCopying(rowData) {
+      if (rowData) {
+        rowData.tableData.copying = true;
+        this.lastCopyingRow = rowData;
+      } else if (this.lastCopyingRow) {
+        this.lastCopyingRow.tableData.copying = undefined;
+        this.lastCopyingRow = undefined;
       }
     }
   }, {

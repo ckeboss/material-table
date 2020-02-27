@@ -16,15 +16,18 @@ export default class MTableEditRow extends React.Component {
     this.state = {
       data: props.data ? JSON.parse(JSON.stringify(props.data)) : this.createRowData()
     };
+    if (this.state.data.tableData && this.state.data.tableData.copying) {
+      delete this.state.data.id;
+    }
   }
 
   createRowData() {
-    return this.props.columns.filter(column => (column.initialEditValue || column.initialEditValue === 0) && column.field).reduce((prev,column)=>{
-      prev[column.field]=column.initialEditValue;
+    return this.props.columns.filter(column => (column.initialEditValue || column.initialEditValue === 0) && column.field).reduce((prev, column) => {
+      prev[column.field] = column.initialEditValue;
       return prev;
-    },{});
+    }, {});
   }
-  
+
   renderColumns() {
     const mapArr = this.props.columns.filter(columnDef => !columnDef.hidden && !(columnDef.tableData.groupOrder > -1))
       .sort((a, b) => a.tableData.columnOrder - b.tableData.columnOrder)
@@ -65,8 +68,8 @@ export default class MTableEditRow extends React.Component {
         if (columnDef.editable === 'onUpdate' && this.props.mode === 'update') {
           allowEditing = true;
         }
-        if (typeof columnDef.editable == 'function'){
-            allowEditing = columnDef.editable(columnDef, this.props.data);
+        if (typeof columnDef.editable == 'function') {
+          allowEditing = columnDef.editable(columnDef, this.props.data);
         }
         if (!columnDef.field || !allowEditing) {
           const readonlyValue = this.props.getFieldValue(this.state.data, columnDef);
@@ -84,7 +87,7 @@ export default class MTableEditRow extends React.Component {
         else {
           const { editComponent, ...cellProps } = columnDef;
           const EditComponent = editComponent || this.props.components.EditField;
-          
+
           return (
             <TableCell
               key={columnDef.tableData.id}

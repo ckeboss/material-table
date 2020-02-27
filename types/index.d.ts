@@ -12,6 +12,7 @@ export interface MaterialTableProps<RowData extends object> {
     isEditable?: (rowData: RowData) => boolean;
     isDeletable?: (rowData: RowData) => boolean;
     onRowAdd?: (newData: RowData) => Promise<void>;
+    onRowCopy?: (newData: RowData) => Promise<void>;
     onRowUpdate?: (newData: RowData, oldData?: RowData) => Promise<void>;
     onRowDelete?: (oldData: RowData) => Promise<void>;
   }
@@ -23,16 +24,16 @@ export interface MaterialTableProps<RowData extends object> {
   localization?: Localization;
   onChangeRowsPerPage?: (pageSize: number) => void;
   onChangePage?: (page: number) => void;
-  onChangeColumnHidden?: (column:Column<RowData>, hidden:boolean) => void;
+  onChangeColumnHidden?: (column: Column<RowData>, hidden: boolean) => void;
   onColumnDragged?: (sourceIndex: number, destinationIndex: number) => void;
   onOrderChange?: (orderBy: number, orderDirection: ("asc" | "desc")) => void;
-  onGroupRemoved?: (column:Column<RowData>, index:boolean) => void;
+  onGroupRemoved?: (column: Column<RowData>, index: boolean) => void;
   onRowClick?: (event?: React.MouseEvent, rowData?: RowData, toggleDetailPanel?: (panelIndex?: number) => void) => void;
   onRowSelected?: (rowData: RowData) => void;
   onSearchChange?: (searchText: string) => void;
- /** An event fired when the table has finished filtering data
-  * @param {Filter<RowData>[]} filters All the filters that are applied to the table 
-  */ 
+  /** An event fired when the table has finished filtering data
+   * @param {Filter<RowData>[]} filters All the filters that are applied to the table
+   */
   onFilterChange?: (filters: Filter<RowData>[]) => void;
   onSelectionChange?: (data: RowData[], rowData?: RowData) => void;
   onTreeExpandChange?: (data: any, isExpanded: boolean) => void;
@@ -116,7 +117,7 @@ export interface Column<RowData extends object> {
   export?: boolean;
   field?: keyof RowData | string;
   filtering?: boolean;
-  filterComponent?: ((props: {columnDef: Column<RowData>, onFilterChanged: (rowId: string, value: any) => void}) => React.ReactElement<any>);
+  filterComponent?: ((props: { columnDef: Column<RowData>, onFilterChanged: (rowId: string, value: any) => void }) => React.ReactElement<any>);
   filterPlaceholder?: string;
   filterCellStyle?: React.CSSProperties;
   grouping?: boolean;
@@ -172,6 +173,7 @@ export interface Icons {
   Add?: React.ForwardRefExoticComponent<React.RefAttributes<SVGSVGElement>>;
   Check?: React.ForwardRefExoticComponent<React.RefAttributes<SVGSVGElement>>;
   Clear?: React.ForwardRefExoticComponent<React.RefAttributes<SVGSVGElement>>;
+  Copy?: React.ForwardRefExoticComponent<React.RefAttributes<SVGSVGElement>>;
   Delete?: React.ForwardRefExoticComponent<React.RefAttributes<SVGSVGElement>>;
   DetailPanel?: React.ForwardRefExoticComponent<React.RefAttributes<SVGSVGElement>>;
   Edit?: React.ForwardRefExoticComponent<React.RefAttributes<SVGSVGElement>>;
@@ -252,6 +254,7 @@ export interface Localization {
       deleteText?: string;
     },
     addTooltip?: string;
+    copyTooltip?: string;
     deleteTooltip?: string;
     editTooltip?: string;
   };
@@ -288,4 +291,4 @@ export interface Localization {
   };
 }
 
-export default class MaterialTable<RowData extends object> extends React.Component<MaterialTableProps<RowData>> {}
+export default class MaterialTable<RowData extends object> extends React.Component<MaterialTableProps<RowData>> { }

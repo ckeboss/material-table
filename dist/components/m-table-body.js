@@ -239,7 +239,9 @@ function (_React$Component) {
         columns: this.props.columns.filter(function (columnDef) {
           return !columnDef.hidden;
         }),
-        data: this.props.initialFormData,
+        data: renderData.find(function (rowData) {
+          return rowData.tableData.copying;
+        }) || this.props.initialFormData,
         components: this.props.components,
         icons: this.props.icons,
         key: "key-add-row",
