@@ -111,7 +111,6 @@ function (_React$Component) {
       if (columnDef.filterAutocomplete) {
         return React.createElement(_Autocomplete["default"], {
           multiple: true,
-          id: "checkboxes-tags-demo",
           options: Object.keys(columnDef.lookup).map(function (key) {
             return {
               id: key,
