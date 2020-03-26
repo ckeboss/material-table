@@ -126,8 +126,6 @@ function (_React$Component) {
             return option.id === value.id;
           },
           onChange: function onChange(event, values) {
-            console.log(values);
-
             _this.props.onFilterChanged(columnDef.tableData.id, values.map(function (value) {
               return value.id;
             }));
