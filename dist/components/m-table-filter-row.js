@@ -11,6 +11,8 @@ exports["default"] = void 0;
 
 var _objectSpread2 = _interopRequireDefault(require("@babel/runtime/helpers/objectSpread"));
 
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
@@ -28,6 +30,8 @@ var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/de
 var React = _interopRequireWildcard(require("react"));
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
+
+var _Autocomplete = _interopRequireDefault(require("@material-ui/lab/Autocomplete"));
 
 var _TableCell = _interopRequireDefault(require("@material-ui/core/TableCell"));
 
@@ -51,15 +55,23 @@ var _ListItemText = _interopRequireDefault(require("@material-ui/core/ListItemTe
 
 var _InputAdornment = _interopRequireDefault(require("@material-ui/core/InputAdornment"));
 
-var _Icon = _interopRequireDefault(require("@material-ui/core/Icon"));
-
 var _Tooltip = _interopRequireDefault(require("@material-ui/core/Tooltip"));
 
 var _dateFns = _interopRequireDefault(require("@date-io/date-fns"));
 
 var _pickers = require("@material-ui/pickers");
 
+var _CheckBoxOutlineBlank = _interopRequireDefault(require("@material-ui/icons/CheckBoxOutlineBlank"));
+
+var _CheckBox = _interopRequireDefault(require("@material-ui/icons/CheckBox"));
+
 /* eslint-disable no-unused-vars */
+var icon = React.createElement(_CheckBoxOutlineBlank["default"], {
+  fontSize: "small"
+});
+var checkedIcon = React.createElement(_CheckBox["default"], {
+  fontSize: "small"
+});
 var ITEM_HEIGHT = 48;
 var ITEM_PADDING_TOP = 8;
 var MenuProps = {
@@ -96,40 +108,92 @@ function (_React$Component) {
       });
     });
     (0, _defineProperty2["default"])((0, _assertThisInitialized2["default"])(_this), "renderLookupFilter", function (columnDef) {
-      return React.createElement(_FormControl["default"], {
-        style: {
-          width: '100%'
-        }
-      }, React.createElement(_InputLabel["default"], {
-        htmlFor: "select-multiple-checkbox"
-      }, columnDef.filterPlaceholder), React.createElement(_Select["default"], {
-        multiple: true,
-        value: columnDef.tableData.filterValue || [],
-        onChange: function onChange(event) {
-          _this.props.onFilterChanged(columnDef.tableData.id, event.target.value);
-        },
-        input: React.createElement(_Input["default"], {
-          id: "select-multiple-checkbox"
-        }),
-        renderValue: function renderValue(selecteds) {
-          return selecteds.map(function (selected) {
-            return columnDef.lookup[selected];
-          }).join(', ');
-        },
-        MenuProps: MenuProps,
-        style: {
-          marginTop: 0
-        }
-      }, Object.keys(columnDef.lookup).map(function (key) {
-        return React.createElement(_MenuItem["default"], {
-          key: key,
-          value: key
-        }, React.createElement(_Checkbox["default"], {
-          checked: columnDef.tableData.filterValue ? columnDef.tableData.filterValue.indexOf(key.toString()) > -1 : false
-        }), React.createElement(_ListItemText["default"], {
-          primary: columnDef.lookup[key]
-        }));
-      })));
+      if (columnDef.filterAutocomplete) {
+        return React.createElement(_Autocomplete["default"], {
+          multiple: true,
+          id: "checkboxes-tags-demo",
+          options: Object.keys(columnDef.lookup).map(function (key) {
+            return {
+              id: key,
+              label: columnDef.lookup[key]
+            };
+          }),
+          disableCloseOnSelect: true,
+          getOptionLabel: function getOptionLabel(option) {
+            return option.label;
+          },
+          getOptionSelected: function getOptionSelected(option, value) {
+            return option.id === value.id;
+          },
+          onChange: function onChange(event, values) {
+            console.log(values);
+
+            _this.props.onFilterChanged(columnDef.tableData.id, values.map(function (value) {
+              return value.id;
+            }));
+          },
+          value: columnDef.tableData.filterValue ? columnDef.tableData.filterValue.map(function (id) {
+            return {
+              id: id,
+              label: columnDef.lookup[id]
+            };
+          }) : [],
+          renderOption: function renderOption(option, _ref) {
+            var selected = _ref.selected;
+            return React.createElement(React.Fragment, null, React.createElement(_Checkbox["default"], {
+              icon: icon,
+              checkedIcon: checkedIcon,
+              style: {
+                marginRight: 8
+              },
+              checked: selected
+            }), option.label);
+          },
+          renderInput: function renderInput(params) {
+            return React.createElement(_TextField["default"], (0, _extends2["default"])({}, params, {
+              variant: "standard",
+              style: {
+                width: '100%'
+              }
+            }));
+          }
+        });
+      } else {
+        return React.createElement(_FormControl["default"], {
+          style: {
+            width: '100%'
+          }
+        }, React.createElement(_InputLabel["default"], {
+          htmlFor: "select-multiple-checkbox"
+        }, columnDef.filterPlaceholder), React.createElement(_Select["default"], {
+          multiple: true,
+          value: columnDef.tableData.filterValue || [],
+          onChange: function onChange(event) {
+            _this.props.onFilterChanged(columnDef.tableData.id, event.target.value);
+          },
+          input: React.createElement(_Input["default"], {
+            id: "select-multiple-checkbox"
+          }),
+          renderValue: function renderValue(selecteds) {
+            return selecteds.map(function (selected) {
+              return columnDef.lookup[selected];
+            }).join(', ');
+          },
+          MenuProps: MenuProps,
+          style: {
+            marginTop: 0
+          }
+        }, Object.keys(columnDef.lookup).map(function (key) {
+          return React.createElement(_MenuItem["default"], {
+            key: key,
+            value: key
+          }, React.createElement(_Checkbox["default"], {
+            checked: columnDef.tableData.filterValue ? columnDef.tableData.filterValue.indexOf(key.toString()) > -1 : false
+          }), React.createElement(_ListItemText["default"], {
+            primary: columnDef.lookup[key]
+          }));
+        })));
+      }
     });
     (0, _defineProperty2["default"])((0, _assertThisInitialized2["default"])(_this), "renderBooleanFilter", function (columnDef) {
       return React.createElement(_Checkbox["default"], {
@@ -309,7 +373,8 @@ MTableFilterRow.defaultProps = {
   localization: {
     filterTooltip: 'Filter'
   },
-  hideFilterIcons: false
+  hideFilterIcons: false,
+  filterAutocomplete: false
 };
 MTableFilterRow.propTypes = {
   columns: _propTypes["default"].array.isRequired,

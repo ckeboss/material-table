@@ -33,6 +33,7 @@ var propTypes = {
     cellStyle: _propTypes["default"].oneOfType([_propTypes["default"].object, _propTypes["default"].func]),
     editCellStyle: _propTypes["default"].object,
     editInputProps: _propTypes["default"].object,
+    filterAutocomplete: _propTypes["default"].bool,
     filterCellStyle: _propTypes["default"].object,
     filterPlaceholder: _propTypes["default"].string,
     filterComponent: _propTypes["default"].oneOfType([_propTypes["default"].element, _propTypes["default"].func]),

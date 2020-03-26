@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import * as React from 'react';
 import PropTypes from 'prop-types';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import TextField from '@material-ui/core/TextField';
@@ -12,10 +13,14 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Checkbox from '@material-ui/core/Checkbox';
 import ListItemText from '@material-ui/core/ListItemText';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import Icon from '@material-ui/core/Icon';
 import Tooltip from '@material-ui/core/Tooltip';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, TimePicker, DatePicker, DateTimePicker } from '@material-ui/pickers';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+
+const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -33,31 +38,68 @@ class MTableFilterRow extends React.Component {
     React.createElement(columnDef.filterComponent, { columnDef: columnDef, onFilterChanged: this.props.onFilterChanged })
   )
 
-  renderLookupFilter = (columnDef) => (
-    <FormControl style={{ width: '100%' }}>
-      <InputLabel htmlFor="select-multiple-checkbox">{columnDef.filterPlaceholder}</InputLabel>
-      <Select
-        multiple
-        value={columnDef.tableData.filterValue || []}
-        onChange={event => {
-          this.props.onFilterChanged(columnDef.tableData.id, event.target.value);
-        }}
-        input={<Input id="select-multiple-checkbox" />}
-        renderValue={selecteds => selecteds.map(selected => columnDef.lookup[selected]).join(', ')}
-        MenuProps={MenuProps}
-        style={{marginTop: 0}}
-      >
-        {
-          Object.keys(columnDef.lookup).map(key => (
-            <MenuItem key={key} value={key}>
-              <Checkbox checked={columnDef.tableData.filterValue ? columnDef.tableData.filterValue.indexOf(key.toString()) > -1 : false} />
-              <ListItemText primary={columnDef.lookup[key]} />
-            </MenuItem>
-          ))
-        }
-      </Select>
-    </FormControl>
-  )
+  renderLookupFilter = (columnDef) => {
+    if (columnDef.filterAutocomplete) {
+      return (
+        <Autocomplete
+          multiple
+          id="checkboxes-tags-demo"
+          options={Object.keys(columnDef.lookup).map(key => ({ id: key, label: columnDef.lookup[key] }))}
+          disableCloseOnSelect
+          getOptionLabel={option => option.label}
+          getOptionSelected={(option, value) => option.id === value.id}
+          onChange={(event, values) => {
+            this.props.onFilterChanged(columnDef.tableData.id, values.map(value => value.id));
+          }}
+          value={
+            columnDef.tableData.filterValue ? columnDef.tableData.filterValue.map(id => ({ id, label: columnDef.lookup[id] })) : []
+          }
+          renderOption={(option, { selected }) => {
+            return (
+              <>
+                <Checkbox
+                  icon={icon}
+                  checkedIcon={checkedIcon}
+                  style={{ marginRight: 8 }}
+                  checked={selected}
+                />
+                {option.label}
+              </>
+            );
+          }}
+          renderInput={params => (
+            <TextField {...params} variant="standard" style={{ width: '100%' }} />
+          )}
+        />
+      );
+    } else {
+      return (
+        <FormControl style={{ width: '100%' }}>
+          <InputLabel htmlFor="select-multiple-checkbox">{columnDef.filterPlaceholder}</InputLabel>
+          <Select
+            multiple
+            value={columnDef.tableData.filterValue || []}
+            onChange={event => {
+              this.props.onFilterChanged(columnDef.tableData.id, event.target.value);
+            }}
+            input={<Input id="select-multiple-checkbox" />}
+            renderValue={selecteds => selecteds.map(selected => columnDef.lookup[selected]).join(', ')}
+            MenuProps={MenuProps}
+            style={{ marginTop: 0 }}
+          >
+            {
+              Object.keys(columnDef.lookup).map(key => (
+                <MenuItem key={key} value={key}>
+                  <Checkbox checked={columnDef.tableData.filterValue ? columnDef.tableData.filterValue.indexOf(key.toString()) > -1 : false} />
+                  <ListItemText primary={columnDef.lookup[key]} />
+                </MenuItem>
+              ))
+            }
+          </Select>
+        </FormControl>
+      );
+    }
+  }
 
   renderBooleanFilter = (columnDef) => (
     <Checkbox
@@ -167,7 +209,7 @@ class MTableFilterRow extends React.Component {
       .map(columnDef => (
         <TableCell
           key={columnDef.tableData.id}
-          style={{...this.props.filterCellStyle, ...columnDef.filterCellStyle}}
+          style={{ ...this.props.filterCellStyle, ...columnDef.filterCellStyle }}
           padding={columnDef.type === "boolean" ? 'checkbox' : undefined}
         >
           {this.getComponentForColumn(columnDef)}
@@ -177,7 +219,7 @@ class MTableFilterRow extends React.Component {
     if (this.props.selection) {
       columns.splice(0, 0, <TableCell padding="none" key="key-selection-column" />);
     }
-    
+
     if (this.props.hasActions) {
       if (this.props.actionsColumnIndex === -1) {
         columns.push(<TableCell key="key-action-column" />);
@@ -225,6 +267,7 @@ MTableFilterRow.defaultProps = {
     filterTooltip: 'Filter'
   },
   hideFilterIcons: false,
+  filterAutocomplete: false
 };
 
 MTableFilterRow.propTypes = {

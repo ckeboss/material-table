@@ -21,6 +21,7 @@ export const propTypes = {
     cellStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     editCellStyle: PropTypes.object,
     editInputProps: PropTypes.object,
+    filterAutocomplete: PropTypes.bool,
     filterCellStyle: PropTypes.object,
     filterPlaceholder: PropTypes.string,
     filterComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
