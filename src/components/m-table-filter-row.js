@@ -43,7 +43,6 @@ class MTableFilterRow extends React.Component {
       return (
         <Autocomplete
           multiple
-          id="checkboxes-tags-demo"
           options={Object.keys(columnDef.lookup).map(key => ({ id: key, label: columnDef.lookup[key] }))}
           disableCloseOnSelect
           getOptionLabel={option => option.label}
