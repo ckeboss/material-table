@@ -43,6 +43,8 @@ var _reactBeautifulDnd = require("react-beautiful-dnd");
 
 var _core = require("@material-ui/core");
 
+var CommonValues = _interopRequireWildcard(require("../utils/common-values"));
+
 /* eslint-disable no-unused-vars */
 
 /* eslint-enable no-unused-vars */
@@ -104,7 +106,10 @@ function (_React$Component) {
           key: columnDef.tableData.id,
           align: ['numeric'].indexOf(columnDef.type) !== -1 ? "right" : "left",
           className: _this.props.classes.header,
-          style: (0, _objectSpread2["default"])({}, _this.props.headerStyle, columnDef.headerStyle),
+          style: (0, _objectSpread2["default"])({}, _this.props.headerStyle, columnDef.headerStyle, {
+            boxSizing: 'border-box',
+            width: columnDef.tableData.width
+          }),
           size: size
         }, content);
       });
@@ -114,11 +119,14 @@ function (_React$Component) {
     key: "renderActionsHeader",
     value: function renderActionsHeader() {
       var localization = (0, _objectSpread2["default"])({}, MTableHeader.defaultProps.localization, this.props.localization);
+      var width = CommonValues.actionsColumnWidth(this.props);
       return React.createElement(_TableCell["default"], {
         key: "key-actions-column",
         className: this.props.classes.header,
         style: (0, _objectSpread2["default"])({}, this.props.headerStyle, {
-          textAlign: 'center'
+          width: width,
+          textAlign: 'center',
+          boxSizing: 'border-box'
         }, this.props.actionsHeaderStyle)
       }, React.createElement(_TableSortLabel["default"], {
         disabled: true,
@@ -130,11 +138,14 @@ function (_React$Component) {
     value: function renderSelectionHeader() {
       var _this2 = this;
 
+      var selectionWidth = CommonValues.selectionMaxWidth(this.props, this.props.treeDataMaxLevel);
       return React.createElement(_TableCell["default"], {
         padding: "none",
         key: "key-selection-column",
         className: this.props.classes.header,
-        style: (0, _objectSpread2["default"])({}, this.props.headerStyle)
+        style: (0, _objectSpread2["default"])({}, this.props.headerStyle, {
+          width: selectionWidth
+        })
       }, this.props.showSelectAllCheckbox && React.createElement(_Checkbox["default"], {
         indeterminate: this.props.selectedCount > 0 && this.props.selectedCount < this.props.dataCount,
         checked: this.props.dataCount > 0 && this.props.selectedCount === this.props.dataCount,

@@ -202,6 +202,7 @@ var defaultProps = {
     search: true,
     showTitle: true,
     showTextRowsSelected: true,
+    tableLayout: 'auto',
     toolbarButtonAlignment: 'right',
     searchFieldAlignment: 'right',
     searchFieldStyle: {},

@@ -292,16 +292,34 @@ function () {
   }, {
     key: "setColumns",
     value: function setColumns(columns) {
+      var undefinedWidthColumns = columns.filter(function (c) {
+        return c.width === undefined;
+      });
+      var usedWidth = ["0px"];
       this.columns = columns.map(function (columnDef, index) {
         columnDef.tableData = (0, _objectSpread2["default"])({
           columnOrder: index,
           filterValue: columnDef.defaultFilter,
           groupOrder: columnDef.defaultGroupOrder,
-          groupSort: columnDef.defaultGroupSort || 'asc'
+          groupSort: columnDef.defaultGroupSort || 'asc',
+          width: columnDef.width
         }, columnDef.tableData, {
           id: index
         });
+
+        if (columnDef.width !== undefined) {
+          if (typeof columnDef.width === "number") {
+            usedWidth.push(columnDef.width + "px");
+          } else {
+            usedWidth.push(columnDef.width);
+          }
+        }
+
         return columnDef;
+      });
+      usedWidth = "(" + usedWidth.join(' + ') + ")";
+      undefinedWidthColumns.forEach(function (columnDef) {
+        columnDef.tableData.width = "calc((100% - ".concat(usedWidth, ") / ").concat(undefinedWidthColumns.length, ")");
       });
     }
   }, {

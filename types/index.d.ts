@@ -11,10 +11,10 @@ export interface MaterialTableProps<RowData extends object> {
   editable?: {
     isEditable?: (rowData: RowData) => boolean;
     isDeletable?: (rowData: RowData) => boolean;
-    onRowAdd?: (newData: RowData) => Promise<void>;
-    onRowCopy?: (newData: RowData) => Promise<void>;
-    onRowUpdate?: (newData: RowData, oldData?: RowData) => Promise<void>;
-    onRowDelete?: (oldData: RowData) => Promise<void>;
+    onRowAdd?: (newData: RowData) => Promise<any>;
+    onRowCopy?: (newData: RowData) => Promise<any>;
+    onRowUpdate?: (newData: RowData, oldData?: RowData) => Promise<any>;
+    onRowDelete?: (oldData: RowData) => Promise<any>;
   }
   icons?: Icons;
   isLoading?: boolean;
@@ -154,20 +154,20 @@ export interface Components {
   Toolbar?: React.ComponentType<any>;
 }
 
-export const MTableAction: () => React.ReactElement<any>;
-export const MTableActions: () => React.ReactElement<any>;
-export const MTableBody: () => React.ReactElement<any>;
-export const MTableBodyRow: () => React.ReactElement<any>;
-export const MTableCell: () => React.ReactElement<any>;
-export const MTableEditField: () => React.ReactElement<any>;
-export const MTableEditRow: () => React.ReactElement<any>;
-export const MTableFilterRow: () => React.ReactElement<any>;
-export const MTableGroupbar: () => React.ReactElement<any>;
-export const MTableGroupRow: () => React.ReactElement<any>;
-export const MTableHeader: () => React.ReactElement<any>;
-export const MTablePagination: () => React.ReactElement<any>;
-export const MTableToolbar: () => React.ReactElement<any>;
-export const MTable: () => React.ReactElement<any>;
+export const MTableAction: (props: any) => React.ReactElement<any>;
+export const MTableActions: (props: any) => React.ReactElement<any>;
+export const MTableBody: (props: any) => React.ReactElement<any>;
+export const MTableBodyRow: (props: any) => React.ReactElement<any>;
+export const MTableCell: (props: any) => React.ReactElement<any>;
+export const MTableEditField: (props: any) => React.ReactElement<any>;
+export const MTableEditRow: (props: any) => React.ReactElement<any>;
+export const MTableFilterRow: (props: any) => React.ReactElement<any>;
+export const MTableGroupbar: (props: any) => React.ReactElement<any>;
+export const MTableGroupRow: (props: any) => React.ReactElement<any>;
+export const MTableHeader: (props: any) => React.ReactElement<any>;
+export const MTablePagination: (props: any) => React.ReactElement<any>;
+export const MTableToolbar: (props: any) => React.ReactElement<any>;
+export const MTable: (props: any) => React.ReactElement<any>;
 
 export interface Icons {
   Add?: React.ForwardRefExoticComponent<React.RefAttributes<SVGSVGElement>>;
@@ -208,6 +208,7 @@ export interface Options {
   exportCsv?: (columns: any[], renderData: any[]) => void;
   filtering?: boolean;
   filterCellStyle?: React.CSSProperties;
+  fixedColumns?: { left?: number; right?: number; };
   groupRowSeparator?: string;
   header?: boolean;
   headerStyle?: React.CSSProperties;
@@ -229,12 +230,13 @@ export interface Options {
   showTitle?: boolean;
   showTextRowsSelected?: boolean;
   search?: boolean;
+  searchText?: string;
   searchFieldAlignment?: 'left' | 'right';
   searchFieldStyle?: React.CSSProperties;
-  searchText?: string;
   selection?: boolean;
   selectionProps?: any | ((data: any) => any);
   sorting?: boolean;
+  tableLayout?: 'auto' | 'fixed';
   thirdSortClick?: boolean;
   toolbar?: boolean;
   toolbarButtonAlignment?: 'left' | 'right';

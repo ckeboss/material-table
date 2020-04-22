@@ -69,11 +69,11 @@ function (_React$Component) {
         }
       }
 
-      var disabled = action.disabled || this.props.disabled;
-
       if (action.hidden) {
         return null;
       }
+
+      var disabled = action.disabled || this.props.disabled;
 
       var handleOnClick = function handleOnClick(event) {
         if (action.onClick) {
@@ -89,9 +89,7 @@ function (_React$Component) {
         size: this.props.size,
         color: "inherit",
         disabled: disabled,
-        onClick: function onClick(event) {
-          return handleOnClick(event);
-        },
+        onClick: handleOnClick,
         style: action.iconButtonStyle
       }, action.iconButtonProps), icon);
 

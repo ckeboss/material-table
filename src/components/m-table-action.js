@@ -9,6 +9,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 class MTableAction extends React.Component {
   render() {
     let action = this.props.action;
+    
     if (typeof action === 'function') {
       action = action(this.props.data);
       if (!action) {
@@ -23,11 +24,11 @@ class MTableAction extends React.Component {
       }
     }
 
-    const disabled = action.disabled || this.props.disabled;
-
     if (action.hidden) {
       return null;
     }
+
+    const disabled = action.disabled || this.props.disabled;
 
     const handleOnClick = event => {
       if (action.onClick) {
@@ -49,7 +50,7 @@ class MTableAction extends React.Component {
           size={this.props.size}
           color="inherit"
           disabled={disabled}
-          onClick={(event) => handleOnClick(event)}
+          onClick={handleOnClick}
           style={action.iconButtonStyle}
           {...action.iconButtonProps}
         >
